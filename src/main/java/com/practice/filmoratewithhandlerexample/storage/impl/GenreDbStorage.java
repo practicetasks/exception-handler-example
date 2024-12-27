@@ -1,6 +1,5 @@
 package com.practice.filmoratewithhandlerexample.storage.impl;
 
-import com.practice.filmoratewithhandlerexample.exception.NotFoundException;
 import com.practice.filmoratewithhandlerexample.model.Genre;
 import com.practice.filmoratewithhandlerexample.storage.GenreStorage;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -26,12 +25,11 @@ public class GenreDbStorage implements GenreStorage {
     }
 
     @Override
-    public Genre findById(int id) {
+    public Optional<Genre> findById(int id) {
         String sql = "select * from genres where id = ?";
         return jdbcTemplate.query(sql, this::rowMapper, id)
                 .stream()
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException("Жанр с id=%s не найден".formatted(id))); // выброс исключения
+                .findFirst();
     }
 
     @Override

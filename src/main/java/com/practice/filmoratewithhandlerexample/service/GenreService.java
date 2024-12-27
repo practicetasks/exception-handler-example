@@ -1,5 +1,6 @@
 package com.practice.filmoratewithhandlerexample.service;
 
+import com.practice.filmoratewithhandlerexample.exception.NotFoundException;
 import com.practice.filmoratewithhandlerexample.model.Genre;
 import com.practice.filmoratewithhandlerexample.storage.GenreStorage;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ public class GenreService {
 
     public Genre findById(int id) {
         log.debug("Получение жанра по идентификатору {}", id);
-        return genreStorage.findById(id);
+        return genreStorage.findById(id)
+                .orElseThrow(() -> new NotFoundException("Жанр с id=%s не найден".formatted(id))); // выброс исключения;
     }
 
     public Genre create(Genre genre) {
